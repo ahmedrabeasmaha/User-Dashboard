@@ -1,31 +1,16 @@
-import { HttpContextToken, HttpEvent, HttpHandler, HttpInterceptor, HttpInterceptorFn, HttpRequest } from '@angular/common/http';
-import { Injectable } from '@angular/core';
-import { Observable, finalize } from 'rxjs';
+import { HttpContextToken, HttpInterceptorFn } from '@angular/common/http';
 import { LoadingService } from '../../services/loading/loading.service';
+import { inject } from '@angular/core';
+import { finalize } from 'rxjs';
 
-export const SkipLoading = 
-  new HttpContextToken<boolean>(() => false);
-  @Injectable()
-  export class LoadingInterceptor 
-      implements HttpInterceptor {
-    constructor(private loadingService: LoadingService) {
-    }
-  
-    intercept(
-      req: HttpRequest<any>,
-      next: HttpHandler
-    ): Observable<HttpEvent<any>> {
-      if (req.context.get(SkipLoading)) {
-        return next.handle(req);
-      }
-  
-      this.loadingService.loadingOn();
-  
-      return next.handle(req).pipe(
-        finalize(() => {
-          this.loadingService.loadingOff();
-        })
-      );
-    }
+export const SkipLoading = new HttpContextToken<boolean>(() => false);
+
+export const loadingInterceptor: HttpInterceptorFn = (req, next) => {
+  if (req.context.get(SkipLoading)) {
+    return next(req);
   }
-  
+  const loadingService = inject(LoadingService);
+  loadingService.loadingOn();
+
+    return next(req).pipe(finalize(() => loadingService.loadingOff()));
+};

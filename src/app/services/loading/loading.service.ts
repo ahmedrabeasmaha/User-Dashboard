@@ -5,6 +5,12 @@ import { BehaviorSubject } from 'rxjs';
   providedIn: 'root'
 })
 export class LoadingService {
+  show() {
+    throw new Error('Method not implemented.');
+  }
+  hide(): void {
+    throw new Error('Method not implemented.');
+  }
 
   constructor() { }
   private loadingSubject = 
