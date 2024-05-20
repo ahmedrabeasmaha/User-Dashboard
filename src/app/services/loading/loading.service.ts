@@ -13,9 +13,7 @@ export class LoadingService {
   }
 
   constructor() { }
-  private loadingSubject = 
-    new BehaviorSubject<boolean>(false);
-
+  private loadingSubject = new BehaviorSubject<boolean>(false);
   loading$ = this.loadingSubject.asObservable();
 
   loadingOn() {

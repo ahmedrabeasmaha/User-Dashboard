@@ -1,3 +1,20 @@
-<button (click)="makeRequest()">
-    Make Request
-  </button>
+<main class="d-flex flex-column flex-grow-1">
+    <div class="container d-flex align-items-center justify-content-center flex-grow-1">
+        <div class="row w-100 justify-content-center">
+            <div class="col-2" *ngFor="let user of users | search : searchText | paginate: { itemsPerPage: 6, currentPage: pagination, totalItems: total}">
+                <div class="card bg-primary" (click)="showUser(user.id)">
+                    <div class="px-2 text-center py-3">
+                        <img src="{{user.avatar}}" width="100" height="100" class="rounded-circle mb-3 img-thumbnail ">
+                        <h5 class="text-white mb-0">{{user.first_name}} {{user.last_name}}</h5>
+                        <p class="small text-white mb-0">{{user.email}}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <footer class="">
+        <div class="d-flex align-items-center justify-content-center">
+            <pagination-controls class="xxxxx" (pageChange)="renderPage($event)"></pagination-controls>
+        </div>
+    </footer>
+</main>

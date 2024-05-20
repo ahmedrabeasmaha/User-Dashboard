@@ -1,1 +1,8 @@
-<p>header works!</p>
+<nav class="navbar bg-light">
+    <div class="container-fluid">
+        <button type="button" (click)="goBack()" class="btn btn-dark"><i class="bi bi-arrow-left"></i></button>
+        <div class="d-flex" *ngIf="router.url === '/'">
+            <input class="form-control me-2" type="search" [(ngModel)] = "searchText" (input)="Update($event)" placeholder="Search" aria-label="Search">
+        </div>
+    </div>
+</nav>

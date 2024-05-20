@@ -17,30 +17,25 @@ export class SpinnerComponent implements OnInit {
   loading$: Observable<boolean>;
 
   @Input()
-  detectRouteTransitions = false;
+  private detectRouteTransitions = false;
 
   @ContentChild("loading")
-  customLoadingIndicator: TemplateRef<any> | null = null;
+  public customLoadingIndicator: TemplateRef<any> | null = null;
 
-  constructor(
-  private loadingService: LoadingService, 
-  private router: Router) {
-    this.loading$ = this.loadingService.loading$;
+  constructor(private _loadingService: LoadingService, private _router: Router) {
+    this.loading$ = this._loadingService.loading$;
   }
 
   ngOnInit() {
     if (this.detectRouteTransitions) {
-      this.router.events
-        .pipe(
-          tap((event) => {
-            if (event instanceof RouteConfigLoadStart) {
-              this.loadingService.loadingOn();
-            } else if (event instanceof RouteConfigLoadEnd) {
-              this.loadingService.loadingOff();
-            }
-          })
-        )
-        .subscribe();
+      this._router.events.pipe(tap((event) => {
+        if (event instanceof RouteConfigLoadStart) {
+          this._loadingService.loadingOn();
+        }
+        else if (event instanceof RouteConfigLoadEnd) {
+          this._loadingService.loadingOff();
+        }
+      })).subscribe();
     }
   }
 }
